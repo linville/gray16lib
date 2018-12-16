@@ -1,0 +1,11 @@
+Makefile*
+.qmake.stash
+*.user
+*.in
+*.rc
+
+uic_wrapper.sh
+
+bin
+doc
+tmp
