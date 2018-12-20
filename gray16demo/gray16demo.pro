@@ -12,10 +12,12 @@ CONFIG += debug_and_release
 
 SOURCES  +=                \
     main.cpp               \
-    gray16_window.cpp
+    gray16_window.cpp      \
+    image_histogram_widget.cpp
 
 HEADERS  +=                \
     gray16_window.h        \
+    image_histogram_widget.h \
     tracking_label.h       \
     conversion_widgets/false_color_options_widget.h \
     conversion_widgets/manual_options_widget.h \

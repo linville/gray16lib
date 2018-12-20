@@ -5,6 +5,7 @@
 
 #include "gray16_window.h"
 
+#include "image_histogram_widget.h"
 #include "offset_gain_options_widget.h"
 #include "manual_options_widget.h"
 
@@ -137,6 +138,8 @@ void Gray16Window::mConvert(int index) {
   if(mOriginalImage.isNull()) {
     return;
   }
+
+  imageHistogramWidget->setImage(mOriginalImage);
 
   if(index == 0) {
     mConvertedImage = mManualConvert.convert(mOriginalImage);

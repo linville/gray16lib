@@ -15,6 +15,7 @@
 #include "offset_gain_options_widget.h"
 
 #include "gray16lib.h"
+#include "image_histogram_widget.h"
 
 #include <QtWidgets>
 
