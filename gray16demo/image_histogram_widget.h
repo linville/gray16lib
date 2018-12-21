@@ -20,7 +20,7 @@ public:
   QSize minimumSizeHint() const override;
   QSize sizeHint() const override;
 
-  static QVector<uint16_t> calculateHistogram(const QImage &image, int bins);
+  static QVector<int> calculateHistogram(const QImage &image, int bins, int &outMaxValue);
 
 protected:
   void paintEvent(QPaintEvent *event) override;
