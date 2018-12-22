@@ -39,9 +39,11 @@ protected:
   void closeEvent(QCloseEvent *e);
 
 private:
+  void mSetupExamples();
+  void mSetupWidgets();
+
   void mConvert(int index);
   void mUpdateValue(int x, int y);
-  void mPopulateExamples();
 
   QImage mOriginalImage; //!< Original 16-bit grayscale image
   QImage mConvertedImage; //!< Converted image

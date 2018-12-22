@@ -31,34 +31,14 @@ Gray16Window::Gray16Window(QWidget *parent)
   connect(advancedImageLabel, &TrackingLabel::imageCoordinate,
           this, &Gray16Window::mUpdateValue);
 
+  standardImageLabel->setOtherLabel(advancedImageLabel);
+  advancedImageLabel->setOtherLabel(standardImageLabel);
+
   connect(conversionCombo, QOverload<const QString &>::of(&QComboBox::activated),
           this, &Gray16Window::onConversionCombo);
 
-  mPopulateExamples();
-
-  // Manual Converter (always first, everything else alphabetical)
-  connect(mManualOptionsWidget, &ManualOptionsWidget::optionsUpdated, this,
-          [this]() {
-    mConvert(0);
-  });
-  conversionOptionsStack->addWidget(mManualOptionsWidget);
-  conversionCombo->addItem("Manual");
-
-  // False Color Converter
-  connect(mFalseColorOptionsWidget, &FalseColorOptionsWidget::optionsUpdated, this,
-          [this]() {
-    mConvert(1);
-  });
-  conversionOptionsStack->addWidget(mFalseColorOptionsWidget);
-  conversionCombo->addItem("False Color");
-
-  // Offset / Gain Converter
-  connect(mOffsetGainOptionsWidget, &OffsetGainOptionsWidget::optionsUpdated, this,
-          [this]() {
-    mConvert(2);
-  });
-  conversionOptionsStack->addWidget(mOffsetGainOptionsWidget);
-  conversionCombo->addItem("Offset / Gain");
+  mSetupExamples();
+  mSetupWidgets();
 
   QFont dataFont("Monospace");
   dataFont.setFixedPitch(true);
@@ -181,8 +161,34 @@ void Gray16Window::mUpdateValue(int x, int y) {
   }
 }
 
-void Gray16Window::mPopulateExamples() {
+void Gray16Window::mSetupExamples() {
   menuExamples->addAction("Example 1", [this]() {
     openFile(":examples/example-1.png");
   });
+}
+
+void Gray16Window::mSetupWidgets() {
+  // Manual Converter (always first, everything else alphabetical)
+  connect(mManualOptionsWidget, &ManualOptionsWidget::optionsUpdated, this,
+          [this]() {
+    mConvert(0);
+  });
+  conversionOptionsStack->addWidget(mManualOptionsWidget);
+  conversionCombo->addItem("Manual");
+
+  // False Color Converter
+  connect(mFalseColorOptionsWidget, &FalseColorOptionsWidget::optionsUpdated, this,
+          [this]() {
+    mConvert(1);
+  });
+  conversionOptionsStack->addWidget(mFalseColorOptionsWidget);
+  conversionCombo->addItem("False Color");
+
+  // Offset / Gain Converter
+  connect(mOffsetGainOptionsWidget, &OffsetGainOptionsWidget::optionsUpdated, this,
+          [this]() {
+    mConvert(2);
+  });
+  conversionOptionsStack->addWidget(mOffsetGainOptionsWidget);
+  conversionCombo->addItem("Offset / Gain");
 }

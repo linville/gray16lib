@@ -39,7 +39,7 @@ private:
   QPixmap mGetCachedHistogram();
 
   QImage mImage; //!< QImage to generate histogram from.
-  int mHighlightValue; //!< Bin value which to draw highlight cursor
+  int mHighlightValue = -1; //!< Bin value which to draw highlight cursor
 
   // Caching
   QVector<int> mHistogram; //!< Histogram (kept around for repaints).
