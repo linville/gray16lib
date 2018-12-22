@@ -4,7 +4,7 @@ Gray16Lib is a library to provide various grayscale image processing algorithms 
 
 16-bit grayscale imagery is commonly encountered in scientific fields. Two notable examples include X-Ray and Aerial imaging. Sensors may raster data such as light intensity, or elevation data, using a 16-bit value. Typical consumer displays are capable of displaying 24-bit color (8-bits per channel: Red/Green/Blue, with some support pseudo 10-bit, usually 8-bit + FRC (Frame  Rate Control) - basically faking the extra depth by flashing a pixel between two colors). To view the 16-bits of data on a display capable of displaying on 8-bits, it becomes necessary to appropriately "throw away" pieces of data while still maintaining important image contrast or splitting the 16-bits across multiple channels of 8-bit data.
 
-**Gray16Demo** is an example application that will load a 16-bit Grayscale PNG and allow the user to interactively explore different image processing algorithms. Open your own 16-bit PNGs or load an example from the Examples menu.
+**Gray16Demo** is an example application that will load a 16-bit Grayscale PNG and allow the user to interactively explore different image processing algorithms. Open your own 16-bit PNGs or load an example from the **Examples** menu (see the [included 16-bit examples here](gray16demo/examples/Examples.md)).
 
 ![Gray16Demo Screenshot](screenshot.png)
 
@@ -39,7 +39,8 @@ Compiling Gray16Lib
 
 Todo
 ====
-* Add an image histogram to Gray16Demo
+* Add more algorithms.
+* Add more examples.
 
 
 Additional Reading
