@@ -159,6 +159,8 @@ void Gray16Window::mUpdateValue(int x, int y) {
   uint16_t originalValue = reinterpret_cast<uint16_t *> (mOriginalImage.scanLine(y))[x];
   originalValueEdit->setText(QString::number(originalValue));
 
+  imageHistogramWidget->highlightValue(originalValue);
+
   if(mConvertedImage.format() == QImage::Format_Grayscale8) {
     uint8_t convertedValue = mConvertedImage.scanLine(y)[x];
     convertedValueEdit->setText(QString::number(convertedValue));

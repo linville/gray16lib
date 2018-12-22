@@ -11,11 +11,21 @@
 ImageHistogramWidget::ImageHistogramWidget(QWidget *parent)
   : QWidget(parent) {
 
+  QBrush cursorBrush(QColor(255, 0, 0, 200));
+  mCursorPen.setBrush(cursorBrush);
+  mCursorPen.setWidth(1);
 }
 
 void ImageHistogramWidget::setImage(const QImage &image) {
   mImage = image;
+  mHistogram.clear();
+  mHistogramPixmap = QPixmap();
 
+  update();
+}
+
+void ImageHistogramWidget::highlightValue(int value) {
+  mHighlightValue = value;
   update();
 }
 
@@ -28,20 +38,16 @@ QSize ImageHistogramWidget::sizeHint() const {
 }
 
 /*!
-  \brief ImageHistogramWidget::calculateHistogram
-  \param image QImage of which to generate histogram from.
+  \brief Calculates the histogram data.
+  \param image QImage of which to calculate a histogram from.
   \param bins Number of histogram bins to calculate.
-  \param outMaxValue Value of largest bin passed back out.
+  \param outMaxHistogramValue Max value of any of the bins.
   \return QVector with an element for each histogram bin.
-
-  \warning outMaxValue can be zero.
 */
 
-QVector<int> ImageHistogramWidget::calculateHistogram(const QImage &image, int bins, int &outMaxValue) {
+QVector<int> ImageHistogramWidget::calculateHistogram(const QImage &image, int bins, int &outMaxHistogramValue) {
   Q_ASSERT(bins > 0);
   Q_ASSERT(bins <= 0xFFFF);
-
-  outMaxValue = 0;
 
   if(image.isNull()) {
     return {};
@@ -67,34 +73,84 @@ QVector<int> ImageHistogramWidget::calculateHistogram(const QImage &image, int b
     histogram[bucket] += 1;
   }
 
-  outMaxValue = *std::max_element(histogram.constBegin(), histogram.constEnd());
+  outMaxHistogramValue = *std::max_element(histogram.constBegin(), histogram.constEnd());
 
   return histogram;
+}
+
+/*!
+  \brief Draws the histogram to a QPixmap
+  \param height Height of desired QPixmap (width is calculated from Histogram vector size).
+  \param maxHistogramValue Max value of histogram (-1 if unknown and it will be calculated)
+  \return QPixmap of the QImage histogram.
+*/
+
+QPixmap ImageHistogramWidget::drawHistogram(const QVector<int> histogram, int height, int maxHistogramValue) {
+  const int width = histogram.size();
+
+  QPixmap pixmap(width, height);
+  QPainter painter(&pixmap);
+
+  if(maxHistogramValue < 0) {
+    maxHistogramValue = *std::max_element(histogram.constBegin(), histogram.constEnd());
+  }
+
+  painter.fillRect(0, 0, width, height, Qt::gray);
+
+  // If caculated histogram is null (usually an empty QImage)
+  if(histogram.empty() || maxHistogramValue == 0) {
+    return pixmap;
+  }
+
+  const auto y1 = height;
+  const auto scale = static_cast<double> (height) / static_cast<double> (maxHistogramValue);
+
+  painter.setPen(QPen(Qt::black, 1));
+  for(int i = 0; i < width; ++i) {
+    const int y2 = y1 - static_cast<int> (rint(histogram[i] * scale));
+
+    painter.drawLine(i, y1, i, y2);
+  }
+
+  return pixmap;
+}
+
+QPixmap ImageHistogramWidget::mGetCachedHistogram() {
+  if(mHistogramPixmap.isNull()
+     || width() != mHistogram.size()
+     || mHistogramPixmap.width() != width()) {
+    mHistogram = calculateHistogram(mImage, width(), mMaxHistogramValue);
+    mHistogramPixmap = drawHistogram(mHistogram, height(), mMaxHistogramValue);
+    return mHistogramPixmap;
+  }
+
+  if(mHistogramPixmap.height() != height()) {
+    mHistogramPixmap = drawHistogram(mHistogram, height(), mMaxHistogramValue);
+    return mHistogramPixmap;
+  }
+
+  return mHistogramPixmap;
 }
 
 void ImageHistogramWidget::paintEvent(QPaintEvent *event) {
   Q_UNUSED(event);
 
-  int maxValue = 0;
-  const auto histogram = calculateHistogram(mImage, width(), maxValue);
-
-  if(histogram.empty()
-     || maxValue == 0) {
-    return;
-  }
-
-  Q_ASSERT(histogram.size() == width());
-
   QPainter painter(this);
-  painter.fillRect(geometry(), Qt::white);
+  painter.drawPixmap(0, 0, mGetCachedHistogram());
 
-  const auto y1 = height();
-  const auto scale = static_cast<double> (height()) / static_cast<double> (maxValue);
+  // Draw Cursor Highlight
+  painter.setPen(mCursorPen);
+  if(mHighlightValue >= 0) {
+    const double bucketSize = 65536. / width();
+    const auto bucket = static_cast<int> (std::floor(mHighlightValue / bucketSize));
 
-  painter.setPen(QPen(Qt::black, 0));
-  for(int i = 0; i < width(); ++i) {
-    const int y2 = y1 - static_cast<int> (rint(histogram[i] * scale));
+    const auto scale = static_cast<double> (height()) / static_cast<double> (mMaxHistogramValue);
+    const int y1 = height() - static_cast<int> (rint(mHistogram[bucket] * scale));
 
-    painter.drawLine(i, y1, i, y2);
+    painter.drawLine(bucket, 0, bucket, height());
+
+    painter.setBrush(mCursorPen.color());
+    painter.drawEllipse(QPoint(bucket, y1), 3, 3);
   }
 }
+
