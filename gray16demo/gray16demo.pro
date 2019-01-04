@@ -37,6 +37,8 @@ RESOURCES += resources.qrc
 ICON = resources/Gray16Demo.icns
 RC_ICONS = resources/Gray16Demo.ico
 
+macx: QMAKE_INFO_PLIST = resources/Info.plist
+
 PROJ_ROOT = ..
 include($${PROJ_ROOT}/common.pri)
 
