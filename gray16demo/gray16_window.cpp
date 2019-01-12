@@ -9,6 +9,8 @@
 #include "offset_gain_options_widget.h"
 #include "manual_options_widget.h"
 
+#include <QtConcurrent>
+
 /*!
   \brief Constructor for the Gray16Window
 */
@@ -99,9 +101,12 @@ void Gray16Window::onConversionCombo(const QString &text) {
   } else if(text == "False Color") {
     conversionOptionsStack->setCurrentIndex(1);
     mConvert(1);
-  } else if(text == "Offset / Gain") {
+  } else if(text == "Neighbor Scale") {
     conversionOptionsStack->setCurrentIndex(2);
     mConvert(2);
+  } else if(text == "Offset / Gain") {
+    conversionOptionsStack->setCurrentIndex(3);
+    mConvert(3);
   } else {
     qCritical() << "Unhandled mode:" << text;
   }
@@ -126,6 +131,24 @@ void Gray16Window::mConvert(int index) {
   } else if(index == 1) {
     mConvertedImage = mFalseColorConvert.convert(mOriginalImage);
   } else if(index == 2) {
+    QProgressDialog dialog;
+    dialog.setWindowTitle("Neighbor Scale");
+    dialog.setLabelText("Converting...");
+
+    QFutureWatcher<QImage> futureWatcher;
+    connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
+
+    futureWatcher.setFuture(
+          QtConcurrent::run(mNeighborScaleConvert,
+                            static_cast<QImage (Gray16::NeighborScale::*)(const QImage &) const>(&Gray16::NeighborScale::convert),
+                            mOriginalImage)
+          );
+
+    dialog.exec();
+    futureWatcher.waitForFinished();
+
+    mConvertedImage = futureWatcher.result();
+  } else if(index == 3) {
     mConvertedImage = mOffsetGainConvert.convert(mOriginalImage);
     mOffsetGainOptionsWidget->updateOffset(mOffsetGainConvert.detectedOffset());
   } else {
@@ -162,8 +185,12 @@ void Gray16Window::mUpdateValue(int x, int y) {
 }
 
 void Gray16Window::mSetupExamples() {
-  menuExamples->addAction("Example 1", [this]() {
-    openFile(":examples/example-1.png");
+  menuExamples->addAction("Example 1 - Lazy Dog", [this]() {
+    openFile(":examples/example-1-lazy-dog.png");
+  });
+
+  menuExamples->addAction("Example 2 - LED Floodlight", [this]() {
+    openFile(":examples/example-2-led-floodlight.png");
   });
 }
 
@@ -184,10 +211,18 @@ void Gray16Window::mSetupWidgets() {
   conversionOptionsStack->addWidget(mFalseColorOptionsWidget);
   conversionCombo->addItem("False Color");
 
+  // Neighbor Scale Converter
+  connect(mNeighborScaleOptionsWidget, &NeighborScaleOptionsWidget::optionsUpdated, this,
+          [this]() {
+    mConvert(2);
+  });
+  conversionOptionsStack->addWidget(mNeighborScaleOptionsWidget);
+  conversionCombo->addItem("Neighbor Scale");
+
   // Offset / Gain Converter
   connect(mOffsetGainOptionsWidget, &OffsetGainOptionsWidget::optionsUpdated, this,
           [this]() {
-    mConvert(2);
+    mConvert(3);
   });
   conversionOptionsStack->addWidget(mOffsetGainOptionsWidget);
   conversionCombo->addItem("Offset / Gain");

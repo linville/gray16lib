@@ -6,7 +6,16 @@ Example 1
 * Author: Aaron Linville
 * Image License: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
-![Example 1 - Lazy Dog / Brown Fox](example-1.png)
+![Example 1 - Lazy Dog / Brown Fox](example-1-lazy-dog.png)
+
+
+Example 2
+---------
+* Source: Stacked 8-bit images taken via shutter bracketing.
+* Author: Aaron Linville
+* Image License: [CC-BY-SA-4.0](https://creativecommons.org/licenses/by-sa/4.0/)
+
+![Example 2 - LED Floodlight](example-2-led-floodlight.png)
 
 
 Contributing

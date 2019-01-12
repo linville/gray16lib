@@ -15,6 +15,7 @@ SOURCES  +=                \
     converter_base.cpp     \
     false_color_convert.cpp \
     manual_convert.cpp     \
+    neighbor_scale.cpp     \
     offset_gain_convert.cpp
 
 HEADERS  +=                \
@@ -22,6 +23,7 @@ HEADERS  +=                \
     converter_base.h       \
     false_color_convert.h  \
     manual_convert.h       \
+    neighbor_scale.h       \
     offset_gain_convert.h
 
 PROJ_ROOT = ..

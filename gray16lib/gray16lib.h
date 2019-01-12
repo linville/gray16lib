@@ -10,6 +10,7 @@
 
 #include "false_color_convert.h"
 #include "manual_convert.h"
+#include "neighbor_scale.h"
 #include "offset_gain_convert.h"
 
 #endif // GRAY16LIB_H

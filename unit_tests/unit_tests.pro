@@ -2,4 +2,5 @@
 
 TEMPLATE = subdirs
 
-#SUBDIRS += someday...
+SUBDIRS += test_lib
+#          test_gui  # someday...

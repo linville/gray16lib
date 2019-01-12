@@ -5,7 +5,7 @@
 TARGET = Gray16Demo
 TEMPLATE = app
 
-QT += core gui widgets
+QT += core gui widgets concurrent
 
 CONFIG += c++11 c++14 c++17 warn_on
 CONFIG += debug_and_release
@@ -21,6 +21,7 @@ HEADERS  +=                \
     tracking_label.h       \
     conversion_widgets/false_color_options_widget.h \
     conversion_widgets/manual_options_widget.h \
+    conversion_widgets/neighbor_scale_options_widget.h \
     conversion_widgets/offset_gain_options_widget.h
 
 INCLUDEPATH +=             \
@@ -30,6 +31,7 @@ FORMS    +=                \
     gray16_window_base.ui  \
     conversion_widgets/false_color_options_widget_base.ui \
     conversion_widgets/manual_options_widget_base.ui \
+    conversion_widgets/neighbor_scale_options_widget_base.ui \
     conversion_widgets/offset_gain_options_widget_base.ui
 
 RESOURCES += resources.qrc

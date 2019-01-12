@@ -12,6 +12,7 @@
 
 #include "false_color_options_widget.h"
 #include "manual_options_widget.h"
+#include "neighbor_scale_options_widget.h"
 #include "offset_gain_options_widget.h"
 
 #include "gray16lib.h"
@@ -50,12 +51,15 @@ private:
 
   Gray16::FalseColorConvert mFalseColorConvert;
   Gray16::ManualConvert mManualConvert;
+  Gray16::NeighborScale mNeighborScaleConvert;
   Gray16::OffsetGainConvert mOffsetGainConvert;
 
   FalseColorOptionsWidget *mFalseColorOptionsWidget =
       new FalseColorOptionsWidget(&mFalseColorConvert);
   ManualOptionsWidget *mManualOptionsWidget =
       new ManualOptionsWidget(&mManualConvert);
+  NeighborScaleOptionsWidget *mNeighborScaleOptionsWidget =
+      new NeighborScaleOptionsWidget(&mNeighborScaleConvert);
   OffsetGainOptionsWidget *mOffsetGainOptionsWidget =
       new OffsetGainOptionsWidget(&mOffsetGainConvert);
 };

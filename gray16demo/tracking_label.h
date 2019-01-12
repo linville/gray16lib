@@ -10,6 +10,10 @@
 #include <QtCore>
 #include <QtWidgets>
 
+/*!
+  \brief Cursor highlighting label that emits coordinates in image coordinates.
+*/
+
 class TrackingLabel : public QLabel {
   Q_OBJECT
 
@@ -23,7 +27,7 @@ public:
     mOtherLabel = otherLabel;
   }
 
-  void disableHighlighting() {
+  void clearHighlighting() {
     mHighlightCoordinate = false;
     update();
   }
@@ -44,13 +48,18 @@ protected:
     Q_UNUSED(event);
 
     if(mOtherLabel) {
-      mOtherLabel->disableHighlighting();
+      mOtherLabel->clearHighlighting();
     }
   }
 
   void mouseMoveEvent(QMouseEvent *event) {
     if(pixmap()) {
       const auto mousePoint = event->localPos();
+      highlightCoordinate(mousePoint.x(), mousePoint.y());
+
+      if(mOtherLabel) {
+        mOtherLabel->highlightCoordinate(mousePoint.x(), mousePoint.y());
+      }
 
       int x = static_cast<int> ((static_cast<double> (pixmap()->width()) / this->width())
                                 * mousePoint.x());
@@ -58,23 +67,21 @@ protected:
                                 * mousePoint.y());
 
       emit imageCoordinate(x, y);
-
-      if(mOtherLabel) {
-        mOtherLabel->highlightCoordinate(mousePoint.x(), mousePoint.y());
-      }
     }
   }
 
   void paintEvent(QPaintEvent *event) {
     QLabel::paintEvent(event);
 
-    if(mHighlightCoordinate) {
-      QPainter painter(this);
-
-      painter.setPen(QPen(QBrush(QColor(255, 0, 0, 200)), 0));
-      painter.drawEllipse(QPoint(mCursorX, mCursorY),
-                          10, 10);
+    if(!mHighlightCoordinate) {
+      return;
     }
+
+    QPainter painter(this);
+
+    painter.setPen(QPen(QBrush(QColor(255, 0, 0, 200)), 0));
+    painter.drawEllipse(QPoint(mCursorX, mCursorY),
+                        10, 10);
   }
 
 private:
