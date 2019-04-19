@@ -3,9 +3,8 @@
 TARGET = test_gray16lib
 
 QT += testlib
-macx: CONFIG -= app_bundle
 
-CONFIG += release warn_on
+CONFIG += release warn_on cmdline
 
 SOURCES += gray16lib_tests.cpp
 
