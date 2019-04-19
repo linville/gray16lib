@@ -102,14 +102,33 @@ QPixmap ImageHistogramWidget::drawHistogram(const QVector<int> histogram, int he
     return pixmap;
   }
 
-  const auto y1 = height;
   const auto scale = static_cast<double> (height) / static_cast<double> (maxHistogramValue);
 
+  // Draw Histogram Values
   painter.setPen(QPen(Qt::black, 1));
   for(int i = 0; i < width; ++i) {
+    const int &y1 = height;  // Read ability
     const int y2 = y1 - static_cast<int> (rint(histogram[i] * scale));
 
-    painter.drawLine(i, y1, i, y2);
+    painter.drawLine(i, y1,
+                     i, y2);
+  }
+
+  // Draw Cumulative Value
+  int sum = std::reduce(histogram.constBegin(), histogram.constEnd());
+  const auto sumScale = static_cast<double> (height) / static_cast<double> (sum);
+
+  painter.setPen(QPen(Qt::blue, 1));
+
+  int accum = histogram[0];
+  for(int i = 1; i < width; ++i) {
+    const int y1 = height - static_cast<int> (rint(accum * sumScale));
+
+    accum += histogram[i];
+    const int y2 = height - static_cast<int> (rint(accum * sumScale));
+
+    painter.drawLine(i - 1, y1,
+                     i, y2);
   }
 
   return pixmap;
