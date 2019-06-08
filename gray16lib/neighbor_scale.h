@@ -10,6 +10,8 @@
 
 #include <QImage>
 
+#include <tuple>
+
 namespace Gray16 {
   /*!
     \brief NeighborScale - Pixel is scaled based on values of neighbor pixels.
@@ -26,9 +28,7 @@ namespace Gray16 {
   private:
     QImage mConvert(const QImage &originalImage) const override;
 
-    static void mFindLocalMinMax(const QImage &image,
-                          int refX, int refY, int distance,
-                          uint16_t &outMin, uint16_t &outMax);
+    static std::tuple<uint16_t, uint16_t> mFindLocalMinMax(const QImage &image, int refX, int refY, int distance);
 
     int mDistance = 0; //!< Radius, in pixels, to compare current pixel to.
   };

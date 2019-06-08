@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
   const auto args = parser.positionalArguments();
   if(!args.empty()) {
-    const auto filePath = args.first();
+    const auto &filePath = args.first();
     if(!QFileInfo::exists(filePath)) {
       qCritical() << "Can't open" << filePath;
       return -1;

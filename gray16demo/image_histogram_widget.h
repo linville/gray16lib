@@ -28,7 +28,7 @@ public:
   static QVector<int> calculateHistogram(const QImage &image,
                                          int bins,
                                          int &outMaxHistogramValue);
-  static QPixmap drawHistogram(const QVector<int> histogram,
+  static QPixmap drawHistogram(const QVector<int> &histogram,
                                int height,
                                int maxHistogramValue = -1);
 

@@ -85,7 +85,7 @@ QVector<int> ImageHistogramWidget::calculateHistogram(const QImage &image, int b
   \return QPixmap of the QImage histogram.
 */
 
-QPixmap ImageHistogramWidget::drawHistogram(const QVector<int> histogram, int height, int maxHistogramValue) {
+QPixmap ImageHistogramWidget::drawHistogram(const QVector<int> &histogram, int height, int maxHistogramValue) {
   const int width = histogram.size();
 
   QPixmap pixmap(width, height);

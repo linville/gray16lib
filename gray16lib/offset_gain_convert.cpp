@@ -39,8 +39,8 @@ QImage OffsetGainConvert::mConvert(const QImage &originalImage) const {
     break;
   }
 
-  uint8_t *d = reinterpret_cast<uint8_t *> (image.bits());
-  const uint16_t *src = reinterpret_cast<const uint16_t *> (originalImage.constBits());
+  auto *d = reinterpret_cast<uint8_t *> (image.bits());
+  const auto *src = reinterpret_cast<const uint16_t *> (originalImage.constBits());
 
   const auto totalPixels = originalImage.width() * originalImage.height();
   for(int i = 0; i < totalPixels; ++i) {

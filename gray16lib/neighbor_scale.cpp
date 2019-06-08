@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <tuple>
 
 using namespace Gray16;
 
@@ -27,11 +28,7 @@ QImage NeighborScale::mConvert(const QImage &originalImage) const {
 
   for(int y = 0; y < originalImage.height(); ++y) {
     for(int x = 0; x < originalImage.width(); ++x) {
-      uint16_t blackPoint = 0x0000;
-      uint16_t whitePoint = 0xffff;
-
-      mFindLocalMinMax(originalImage, x, y, mDistance,
-                       blackPoint, whitePoint);
+      const auto [blackPoint, whitePoint] = mFindLocalMinMax(originalImage, x, y, mDistance);
 
       const auto scale = (whitePoint - blackPoint) / 255.;
       const auto offset = (y * image.width()) + x;
@@ -44,10 +41,9 @@ QImage NeighborScale::mConvert(const QImage &originalImage) const {
   return image;
 }
 
-void NeighborScale::mFindLocalMinMax(const QImage &image, int refX, int refY, int distance,
-                                    uint16_t &outMin, uint16_t &outMax) {
-  outMin = 0xffff;
-  outMax = 0x0000;
+std::tuple<uint16_t, uint16_t> NeighborScale::mFindLocalMinMax(const QImage &image, int refX, int refY, int distance) {
+  uint16_t outMin = 0xffff;
+  uint16_t outMax = 0x0000;
 
   const uint16_t *src = reinterpret_cast<const uint16_t *> (image.constBits());
 
@@ -80,4 +76,5 @@ void NeighborScale::mFindLocalMinMax(const QImage &image, int refX, int refY, in
   }
 
   Q_ASSERT(outMin <= outMax);
+  return std::make_tuple(outMin, outMax);
 }

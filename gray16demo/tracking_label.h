@@ -54,7 +54,7 @@ protected:
 
   void mouseMoveEvent(QMouseEvent *event) {
     if(pixmap()) {
-      const auto mousePoint = event->localPos();
+      const auto mousePoint = event->localPos().toPoint();
       highlightCoordinate(mousePoint.x(), mousePoint.y());
 
       if(mOtherLabel) {
