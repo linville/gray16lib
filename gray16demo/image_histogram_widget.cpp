@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <numeric>
 
 ImageHistogramWidget::ImageHistogramWidget(QWidget *parent)
   : QWidget(parent) {
@@ -115,7 +116,17 @@ QPixmap ImageHistogramWidget::drawHistogram(const QVector<int> &histogram, int h
   }
 
   // Draw Cumulative Value
+
+  // Todo: G++ 9.1 support of parallelism requires linking with the
+  // 2018 tbb. We'll add it when packages are more widely available
+  // on Linux.
+  //
+  // std::reduce(std::execution::par, v.cbegin(), v.cend());
+#if defined(Q_OS_MACOS)
   int sum = std::reduce(histogram.constBegin(), histogram.constEnd());
+#else
+  int sum = std::accumulate(histogram.constBegin(), histogram.constEnd(), 0);
+#endif
   const auto sumScale = static_cast<double> (height) / static_cast<double> (sum);
 
   painter.setPen(QPen(Qt::blue, 1));
