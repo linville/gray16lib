@@ -11,8 +11,8 @@ Gray16Lib is a library to provide various grayscale image processing algorithms 
 
 Requirements
 ============
-* [Qt 5.13](http://doc-snapshots.qt.io/qt5-dev/qimage.html#Format-enum) for support of `QImage::Format_Grayscale16`. See [QTBUG-41176](http://bugreports.qt.io/browse/QTBUG-41176).
-  * [Support was merged in dev](https://codereview.qt-project.org/#/c/239203/). Qt 5.13 is planned for release in June 2019.
+* Qt 5.13 (released [June 19th, 2019](https://blog.qt.io/blog/2019/06/19/qt-5-13-released/)) for support of [`QImage::Format_Grayscale16`](https://doc.qt.io/qt-5/qimage.html#Format-enum).
+  * See also: [QTBUG-41176](http://bugreports.qt.io/browse/QTBUG-41176), [Gerrit patch](https://codereview.qt-project.org/#/c/239203/).
 
 
 Image Processing Algorithms
