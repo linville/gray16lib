@@ -3,6 +3,7 @@ Makefile*
 *.user
 *.in
 *.rc
+*-pre1
 
 uic_wrapper.sh
 
