@@ -163,7 +163,7 @@ QPixmap ImageHistogramWidget::mGetCachedHistogram() {
 }
 
 void ImageHistogramWidget::paintEvent(QPaintEvent *event) {
-  Q_UNUSED(event);
+  Q_UNUSED(event)
 
   QPainter painter(this);
   painter.drawPixmap(0, 0, mGetCachedHistogram());

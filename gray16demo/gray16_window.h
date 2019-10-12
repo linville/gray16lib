@@ -1,8 +1,6 @@
 /*!
   \file gray16demo/gray16_window.h
   \brief Definition of Gray16Window class.
-
-  UNCLASSIFIED
 */
 
 #ifndef GRAY16_WINDOW_H

@@ -75,8 +75,38 @@ void Gray16Window::onFileOpen() {
 }
 
 void Gray16Window::onHelpAbout() {
-  QMessageBox::about(this, "Gray16 Demonstration GUI",
-                     "Demonstrating 16-bit Grayscale Image Processing.");
+  QMessageBox aboutBox(this);
+
+  const auto license = QStringLiteral("Permission to use, copy, modify, and/or distribute this software for any "
+                                      "purpose with or without fee is hereby granted, provided that the above "
+                                      "copyright notice and this permission notice appear in all copies.\n\n"
+                                      "THE SOFTWARE IS PROVIDED \"AS IS\" AND THE AUTHOR DISCLAIMS ALL WARRANTIES "
+                                      "WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF "
+                                      "MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR "
+                                      "ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES "
+                                      "WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN "
+                                      "ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF "
+                                      "OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.");
+
+  aboutBox.setWindowTitle("Gray16 Demonstration GUI");
+  aboutBox.setText("Demonstrating 16-bit Grayscale Image Processing.\n\n"
+                   "Copyright (c) 2019, Aaron Linville");
+  aboutBox.setDetailedText(license);
+
+  QPixmap icon = QPixmap(":/resources/gray16demo_1024.png");
+  icon.setDevicePixelRatio(2);
+  aboutBox.setIconPixmap(icon.scaled(256, 256, Qt::KeepAspectRatio));
+
+  // Expand license by default
+  for(QAbstractButton *button : aboutBox.buttons()) {
+    if(aboutBox.buttonRole(button) == QMessageBox::ActionRole) {
+      button->click();
+      button->deleteLater();
+      break;
+    }
+  }
+
+  aboutBox.exec();
 }
 
 void Gray16Window::openFile(const QString &imagePath) {
@@ -87,7 +117,7 @@ void Gray16Window::openFile(const QString &imagePath) {
 
   if(mOriginalImage.format() != QImage::Format_Grayscale16) {
     QMessageBox::critical(this, "Not 16-bit Grayscale",
-                          "This selecetd image was not 16-bit grayscale.");
+                          "Image was not a 16-bit grayscale format.");
   }
 
   standardImageLabel->setPixmap(QPixmap::fromImage(mOriginalImage));
@@ -136,7 +166,8 @@ void Gray16Window::mConvert(int index) {
     dialog.setLabelText("Converting...");
 
     QFutureWatcher<QImage> futureWatcher;
-    connect(&futureWatcher, SIGNAL(finished()), &dialog, SLOT(reset()));
+    connect(&futureWatcher, &QFutureWatcher<QImage>::finished,
+            &dialog, &QProgressDialog::reset);
 
     futureWatcher.setFuture(
           QtConcurrent::run(mNeighborScaleConvert,

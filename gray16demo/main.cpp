@@ -8,6 +8,13 @@
 #include <QtCore>
 #include <QtGui>
 
+/*!
+  \brief Gray16Demo main(..)
+
+  Optionally, a path to a PNG image can be passed as a single positional
+  argument and it will be opened at startup.
+*/
+
 int main(int argc, char *argv[]) {
   QApplication myApp(argc, argv);
 

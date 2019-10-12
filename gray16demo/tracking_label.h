@@ -45,7 +45,7 @@ signals:
 
 protected:
   void leaveEvent(QEvent *event) {
-    Q_UNUSED(event);
+    Q_UNUSED(event)
 
     if(mOtherLabel) {
       mOtherLabel->clearHighlighting();
