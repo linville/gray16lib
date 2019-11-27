@@ -6,6 +6,7 @@ Makefile*
 *-pre1
 
 uic_wrapper.sh
+target_wrapper.*
 
 bin
 doc
