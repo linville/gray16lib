@@ -18,7 +18,7 @@ jobs:
     - name: QMake and Make
       run: |
         qmake
-        make
+        make -j2
     - name: Run Tests
       run: make check
       env:
