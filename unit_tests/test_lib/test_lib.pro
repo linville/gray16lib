@@ -4,7 +4,7 @@ TARGET = test_gray16lib
 
 QT += testlib
 
-CONFIG += release warn_on testcase cmdline
+CONFIG += debug_and_release warn_on testcase cmdline
 
 SOURCES += gray16lib_tests.cpp
 
