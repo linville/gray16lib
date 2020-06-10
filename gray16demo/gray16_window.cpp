@@ -36,7 +36,7 @@ Gray16Window::Gray16Window(QWidget *parent)
   standardImageLabel->setOtherLabel(advancedImageLabel);
   advancedImageLabel->setOtherLabel(standardImageLabel);
 
-  connect(conversionCombo, QOverload<const QString &>::of(&QComboBox::activated),
+  connect(conversionCombo, QOverload<const QString &>::of(&QComboBox::textActivated),
           this, &Gray16Window::onConversionCombo);
 
   mSetupExamples();

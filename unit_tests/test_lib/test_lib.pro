@@ -6,6 +6,8 @@ QT += testlib
 
 CONFIG += debug_and_release warn_on testcase cmdline
 
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051500
+
 SOURCES += gray16lib_tests.cpp
 
 PROJ_ROOT = ../..

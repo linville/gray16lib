@@ -11,6 +11,8 @@ CONFIG += staticlib
 CONFIG += c++11 c++14 c++17 warn_on
 CONFIG += debug_and_release
 
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051500
+
 SOURCES  +=                \
     converter_base.cpp     \
     false_color_convert.cpp \

@@ -53,21 +53,23 @@ protected:
   }
 
   void mouseMoveEvent(QMouseEvent *event) {
-    if(pixmap()) {
-      const auto mousePoint = event->localPos().toPoint();
-      highlightCoordinate(mousePoint.x(), mousePoint.y());
-
-      if(mOtherLabel) {
-        mOtherLabel->highlightCoordinate(mousePoint.x(), mousePoint.y());
-      }
-
-      int x = static_cast<int> ((static_cast<double> (pixmap()->width()) / this->width())
-                                * mousePoint.x());
-      int y = static_cast<int> ((static_cast<double> (pixmap()->height()) / this->height())
-                                * mousePoint.y());
-
-      emit imageCoordinate(x, y);
+    if(pixmap().isNull()) {
+      return;
     }
+
+    const auto mousePoint = event->localPos().toPoint();
+    highlightCoordinate(mousePoint.x(), mousePoint.y());
+
+    if(mOtherLabel) {
+      mOtherLabel->highlightCoordinate(mousePoint.x(), mousePoint.y());
+    }
+
+    int x = static_cast<int> ((static_cast<double> (pixmap().width()) / this->width())
+                              * mousePoint.x());
+    int y = static_cast<int> ((static_cast<double> (pixmap().height()) / this->height())
+                              * mousePoint.y());
+
+    emit imageCoordinate(x, y);
   }
 
   void paintEvent(QPaintEvent *event) {

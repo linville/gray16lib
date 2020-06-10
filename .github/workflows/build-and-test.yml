@@ -14,7 +14,7 @@ jobs:
     - name: Install Qt
       uses: jurplel/install-qt-action@v2.1.0
       with:
-        version: 5.13.2
+        version: 5.15.0
     - name: QMake and Make
       run: |
         qmake

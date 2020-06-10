@@ -18,8 +18,8 @@ void ManualConvert::setExposurePoints(uint16_t blackPoint, uint16_t whitePoint) 
   Q_ASSERT(whitePoint >= MinWhitePoint);
 
   if(whitePoint - 255 < blackPoint) {
-    qCritical() << "Invalid exposure settings: whitePoint - 255 < blackPoint." << endl
-                << " blackPoint" << blackPoint << endl
+    qCritical() << "Invalid exposure settings: whitePoint - 255 < blackPoint." << Qt::endl
+                << " blackPoint" << blackPoint << Qt::endl
                 << " whitePoint" << whitePoint;
     return;
   }

@@ -10,6 +10,8 @@ QT += core gui widgets concurrent
 CONFIG += c++11 c++14 c++17 warn_on
 CONFIG += debug_and_release
 
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051500
+
 SOURCES  +=                \
     main.cpp               \
     gray16_window.cpp      \
