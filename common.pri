@@ -8,7 +8,7 @@ DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 PROJ_ROOT = $${PWD}
 DESTDIR = $${PROJ_ROOT}/bin
 
-build_pass:CONFIG(debug, debug|release) {
+CONFIG(debug, debug|release) {
   !macx:!win32: BUILD_SUFFIX = "_debug"
   macx: BUILD_SUFFIX = " Debug"
   win32: BUILD_SUFFIX = "Debug"

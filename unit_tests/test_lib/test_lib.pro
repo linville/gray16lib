@@ -4,7 +4,8 @@ TARGET = test_gray16lib
 
 QT += testlib
 
-CONFIG += debug_and_release warn_on testcase cmdline
+CONFIG += warn_on testcase cmdline
+CONFIG += debug
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051500
 

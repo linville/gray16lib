@@ -20,6 +20,9 @@ class Gray16LibTests : public QObject {
 private slots:
   void initTestCase();
 
+  void mManualConvert();
+  void mManualConvert_data();
+
   void neighborScale();
   void neighborScale_data();
   
@@ -53,6 +56,30 @@ void Gray16LibTests::initTestCase() {
   }
 
   mExamplesPath = *iter;
+}
+
+void Gray16LibTests::mManualConvert() {
+  QFETCH(QString, filename);
+
+  QImage original(QString("%1/%2").arg(mExamplesPath, filename));
+
+  Gray16::ManualConvert converter;
+  converter.setExposurePoints(0xF, 0xFFF);
+
+  QImage convertedImage;
+  QBENCHMARK {
+    convertedImage = converter.convert(original);
+  }
+
+  QVERIFY(!convertedImage.isNull());
+}
+
+void Gray16LibTests::mManualConvert_data() {
+  QTest::addColumn<QString>("filename");
+
+  for(const auto &example : mExamples()) {
+    QTest::newRow(example.toLatin1().constData()) << example;
+  }
 }
 
 void Gray16LibTests::neighborScale() {

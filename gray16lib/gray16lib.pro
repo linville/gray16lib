@@ -9,7 +9,7 @@ QT += core gui concurrent
 
 CONFIG += staticlib
 CONFIG += c++11 c++14 c++17 warn_on
-CONFIG += debug_and_release
+CONFIG += debug_and_release build_all
 
 DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x051500
 

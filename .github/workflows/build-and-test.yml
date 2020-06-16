@@ -18,7 +18,7 @@ jobs:
     - name: QMake and Make
       run: |
         qmake
-        make -j2
+        make -j$(nproc)
     - name: Run Tests
       run: make check
       env:
