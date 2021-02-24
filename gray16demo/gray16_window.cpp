@@ -90,7 +90,7 @@ void Gray16Window::onHelpAbout() {
 
   aboutBox.setWindowTitle("Gray16 Demonstration GUI");
   aboutBox.setText("Demonstrating 16-bit Grayscale Image Processing.\n\n"
-                   "Copyright (c) 2020, Aaron Linville");
+                   "Copyright (c) 2021, Aaron Linville");
   aboutBox.setDetailedText(license);
 
   QPixmap icon = QPixmap(":/resources/gray16demo_1024.png");
