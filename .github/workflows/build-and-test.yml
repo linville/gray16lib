@@ -13,12 +13,12 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: Qt5.15.0-${{ runner.os }}
+        key: Qt5.15.2-${{ runner.os }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: 5.15.0
+        version: 5.15.2
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
     - name: QMake and make
@@ -52,12 +52,12 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: Qt5.15.0-${{ runner.os }}
+        key: Qt5.15.2-${{ runner.os }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: 5.15.0
+        version: 5.15.2
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
     - name: QMake and make
@@ -93,7 +93,7 @@ jobs:
         Categories=Office;
         EOT
 
-        sudo apt-get install libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0
+        sudo apt-get install libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0
         curl -SLO https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
         chmod a+x linuxdeployqt-6-x86_64.AppImage
 
@@ -115,12 +115,12 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: Qt5.15.0-${{ runner.os }}
+        key: Qt5.15.2-${{ runner.os }}
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: 5.15.0
+        version: 5.15.2
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
     - name: QMake and build
