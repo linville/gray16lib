@@ -9,5 +9,6 @@ uic_wrapper.sh
 target_wrapper.*
 
 bin
+build
 doc
 tmp

@@ -3,6 +3,9 @@
   \brief Gray16Lib Unit Tests.
 */
 
+#include <QImage>
+#include <QString>
+#include <QStringList>
 #include <QtTest/QtTest>
 
 #include "gray16lib.h"
@@ -33,27 +36,24 @@ private:
 };
 
 void Gray16LibTests::initTestCase() {
-  QStringList paths = {
+  const QStringList paths = {
     "../gray16demo/examples",
     "gray16demo/examples",
-    "../../gray16demo/examples"
+    "../../gray16demo/examples",
+    "../../../gray16demo/examples"
   };
 
+  QVERIFY2(!mExamples().isEmpty(), "Examples list was empty.");
+
   const auto fileName = mExamples().constFirst();
-
-  if(fileName == mExamplesPath.constEnd()) {
-    QSKIP("Examples list was empty.");
-  }
-
   const auto iter = std::find_if(paths.constBegin(),
                                  paths.constEnd(),
                                  [&fileName](const QString &path) {
     return QFileInfo::exists(QString("%1/%2").arg(path, fileName));
   });
 
-  if(iter->isEmpty()) {
-    QSKIP("Couldn't find examples.");
-  }
+  QVERIFY2(iter != paths.constEnd(),
+           qPrintable(QString("Couldn't find examples from %1").arg(QDir::currentPath())));
 
   mExamplesPath = *iter;
 }
@@ -113,5 +113,5 @@ QStringList Gray16LibTests::mExamples() const {
   };
 }
 
-QTEST_MAIN(Gray16LibTests)
+QTEST_APPLESS_MAIN(Gray16LibTests)
 #include "gray16lib_tests.moc"

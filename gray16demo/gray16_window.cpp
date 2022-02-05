@@ -170,8 +170,8 @@ void Gray16Window::mConvert(int index) {
             &dialog, &QProgressDialog::reset);
 
     futureWatcher.setFuture(
-          QtConcurrent::run(mNeighborScaleConvert,
-                            static_cast<QImage (Gray16::NeighborScale::*)(const QImage &) const>(&Gray16::NeighborScale::convert),
+          QtConcurrent::run(static_cast<QImage (Gray16::NeighborScale::*)(const QImage &) const>(&Gray16::NeighborScale::convert),
+                            mNeighborScaleConvert,
                             mOriginalImage)
           );
 

@@ -13,34 +13,38 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: Qt5.15.2-${{ runner.os }}
+        key: ${{ runner.os }}-QtCache
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: 5.15.2
+        version: 6.2.3
+        modules: ''
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
-    - name: QMake and make
+    - name: CMake and Make
       run: |
-        qmake
+        mkdir build && cd build
+        cmake ..
         make -j$(nproc)
 
     - name: Run tests
       run: |
-        make check
+        cd build
+        make test
 
     - name: Package
       run: |
-        macdeployqt bin/Gray16Demo.app
+        cd build/gray16demo/
+        macdeployqt Gray16Demo.app -appstore-compliant 
         # https://github.com/actions/upload-artifact/issues/39
-        ditto -c -k --keepParent bin/Gray16Demo.app Gray16Demo.app.zip
+        ditto -c -k --keepParent Gray16Demo.app Gray16Demo.app.zip
 
     - name: Upload build
       uses: 'actions/upload-artifact@v2'
       with:
         name: Gray16Demo.app
-        path: Gray16Demo.app.zip
+        path: build/gray16demo/Gray16Demo.app.zip
 
   build-linux:
     runs-on: ubuntu-latest
@@ -52,22 +56,25 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: Qt5.15.2-${{ runner.os }}
+        key: ${{ runner.os }}-QtCache
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: 5.15.2
+        version: 6.2.3
+        modules: ''
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
-    - name: QMake and make
+    - name: CMake and Make
       run: |
-        qmake
+        mkdir build && cd build
+        cmake ..
         make -j$(nproc)
 
     - name: Run tests
       run: |
-        make check
+        cd build
+        make test
       env:
         # Default platform plugins (like XCB) may
         # fail to initialize if they're run in a
@@ -76,12 +83,14 @@ jobs:
 
     - name: Package
       run: |
+        cd build/gray16demo/
+
         mkdir -p tmp/appimage/usr/bin
         mkdir -p tmp/appimage/usr/share/icons/hicolor/1024x1024/apps
         mkdir -p tmp/appimage/usr/share/applications
 
-        cp bin/Gray16Demo tmp/appimage/usr/bin
-        cp gray16demo/resources/gray16demo_1024.png tmp/appimage/usr/share/icons/hicolor/1024x1024/apps/gray16demo.png
+        cp Gray16Demo tmp/appimage/usr/bin
+        cp ../../gray16demo/resources/gray16demo_1024.png tmp/appimage/usr/share/icons/hicolor/1024x1024/apps/gray16demo.png
 
         cat <<EOT >> tmp/appimage/usr/share/applications/Gray16Demo.desktop
         [Desktop Entry]
@@ -103,10 +112,10 @@ jobs:
       uses: 'actions/upload-artifact@v2'
       with:
         name: Gray16Demo.AppImage
-        path: Gray16Demo*.AppImage
+        path: build/gray16demo/Gray16Demo*.AppImage
 
   build-windows:
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
 
@@ -115,33 +124,37 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ../Qt
-        key: Qt5.15.2-${{ runner.os }}
+        key: ${{ runner.os }}-QtCache
 
     - name: Install Qt
       uses: jurplel/install-qt-action@v2
       with:
-        version: 5.15.2
+        version: 6.2.3
+        modules: ''
         cached: ${{ steps.cache-qt.outputs.cache-hit }}
 
-    - name: QMake and build
+    - name: CMake and NMake
       shell: cmd
       run: |
         call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        qmake
+        mkdir build && cd build
+        cmake -G "NMake Makefiles" ..
         nmake
 
     - name: Run tests
       shell: cmd
       run: |
         call "%programfiles(x86)%\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        nmake check
+        cd build
+        nmake test
 
     - name: Package
       shell: cmd
       run: |
+        cd build\gray16demo
         mkdir Gray16Demo
-        copy bin\Gray16Demo.exe Gray16Demo
-        windeployqt Gray16Demo\Gray16Demo.exe
+        copy Gray16Demo.exe Gray16Demo
+        windeployqt --no-translations Gray16Demo\Gray16Demo.exe
 
         REM https://github.com/actions/upload-artifact/issues/39
         REM 7z a Gray16Demo.7z Gray16Demo
@@ -150,4 +163,4 @@ jobs:
       uses: 'actions/upload-artifact@v2'
       with:
         name: Gray16Demo-win10-amd64
-        path: Gray16Demo
+        path: build/gray16demo/Gray16Demo

@@ -57,7 +57,7 @@ protected:
       return;
     }
 
-    const auto mousePoint = event->localPos().toPoint();
+    const auto mousePoint = event->position().toPoint();
     highlightCoordinate(mousePoint.x(), mousePoint.y());
 
     if(mOtherLabel) {
